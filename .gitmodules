@@ -1,0 +1,6 @@
+[submodule "clojure-mode"]
+	path = clojure-mode
+	url = http://github.com/technomancy/clojure-mode.git
+[submodule "slime"]
+	path = slime
+	url = http://github.com/nablaone/slime.git
