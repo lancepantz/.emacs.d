@@ -1,4 +1,4 @@
-;; turn off emacs startup message
+   ;; turn off emacs startup message
 (setq inhibit-startup-message t)
 
 ;; add all subdirs of ~/.emcas.d to your load-path
@@ -28,7 +28,7 @@
 (eval-after-load "slime" 
   '(progn (slime-setup '(slime-repl))))
 (require 'slime)
-(slime-setup)
+(require 'slime-repl)
 
 ;; load clojure test mode 
 (autoload 'clojure-test-mode "clojure-test-mode" "Clojure test mode" t)
@@ -53,11 +53,6 @@
 (setq hl-paren-colors
       '("orange1" "yellow1" "greenyellow" "green1"
 	"springgreen1" "cyan1" "slateblue1" "magenta1" "purple"))
-
-;; slime
-;(require 'slime)
-;(require 'slime-repl)
-;(add-hook 'slime-load-hook 'slime-repl-init)                          
 
 ;; magic, haven't broken this down yet
 (defmacro defclojureface (name color desc &optional others)
