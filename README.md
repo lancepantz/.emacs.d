@@ -1,4 +1,4 @@
-This an emacs config designed to get an advanced development environment for clojure and (eventually) ruby going quickly. Intended for pure emacs and it's gui installs. I'm avoiding elpa, due to the lagtime in package updates. Submodules are used when availabe. This includes, paredit, rainbow parens, and some other shit.
+This is my personal emacs config, set up primarily for clojure and ruby. Intended for pure emacs and it's gui installs. I'm avoiding elpa, due to the lagtime in package updates. Submodules are used when availabe. This includes, paredit, rainbow parens, and some other shit.
 
 ## Installation
 1. backup ~/.emacs.d if there is anything you wish to keep
