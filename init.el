@@ -1,5 +1,7 @@
-   ;; turn off emacs startup message
+;; turn off emacs startup message
 (setq inhibit-startup-message t)
+;; do not wrap lines
+(setq-default truncate-lines t)
 
 ;; add all subdirs of ~/.emcas.d to your load-path
 (dolist (f (file-expand-wildcards "~/.emacs.d/*"))
@@ -27,6 +29,9 @@
 ;; load slime
 (eval-after-load "slime" 
   '(progn (slime-setup '(slime-repl))))
+(eval-after-load "slime" 
+  '(setq slime-protocol-version 'ignore))
+
 (require 'slime)
 (require 'slime-repl)
 
