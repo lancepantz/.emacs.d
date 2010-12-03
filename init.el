@@ -3,6 +3,10 @@
 ;; do not wrap lines
 (setq-default truncate-lines t)
 
+;; tab width as two, using spaces
+(setq default-tab-width 2)
+(setq-default indent-tabs-mode nil)
+
 ;; add all subdirs of ~/.emcas.d to your load-path
 (dolist (f (file-expand-wildcards "~/.emacs.d/*"))
   (add-to-list 'load-path f))
