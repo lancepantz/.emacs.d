@@ -31,15 +31,15 @@
 (require 'clojure-mode)
 
 ;; load slime
-(eval-after-load "slime" 
+(eval-after-load "slime"
   '(progn (slime-setup '(slime-repl))))
-(eval-after-load "slime" 
+(eval-after-load "slime"
   '(setq slime-protocol-version 'ignore))
 
 (require 'slime)
 (require 'slime-repl)
 
-;; load clojure test mode 
+;; load clojure test mode
 (autoload 'clojure-test-mode "clojure-test-mode" "Clojure test mode" t)
 (autoload 'clojure-test-maybe-enable "clojure-test-mode" "" t)
 (add-hook 'clojure-mode-hook 'clojure-test-maybe-enable)
@@ -88,3 +88,46 @@
             (("(\\(\\.[^ \n)]*\\|[^ \n)]+\\.\\|new\\)\\([ )\n]\\|$\\)" 1 'clojure-java-call)))))
 
 (add-hook 'clojure-mode-hook 'tweak-clojure-syntax)
+
+;;macros
+(global-set-key (kbd "C-,")        'kmacro-start-macro-or-insert-counter)
+(global-set-key (kbd "C-.")        'kmacro-end-or-call-macro)
+(global-set-key (kbd "<C-return>") 'apply-macro-to-region-lines)
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;;tabbar settings
+(require 'tabbar)
+(set-face-attribute 'tabbar-default    nil :background wombat-gray-1 :font "Monaco")
+(set-face-attribute 'tabbar-unselected nil :foreground wombat-bg :box nil)
+(set-face-attribute 'tabbar-selected   nil :background wombat-bg :foreground wombat-gray-1 :box nil)
+(set-face-attribute 'tabbar-highlight  nil :underline t)
+
+(custom-set-variables '(tabbar-separator  '(0)))
+(custom-set-variables '(tabbar-use-images nil))
+
+(tabbar-mode 1)
+(global-set-key [C-right] 'tabbar-forward-tab)
+(global-set-key [C-left] 'tabbar-backward-tab)
+(global-set-key [C-up] 'tabbar-forward-group)
+(global-set-key [C-down] 'tabbar-backward-group)
+
+(defadvice tabbar-buffer-tab-label (after tabbar-tab-label activate)
+  (setq ad-return-value
+        (concat " " (concat (replace-regexp-in-string "<[[:digit:]]+>" "" ad-return-value) " "))))
+
+(defun tabbar-group-buffers-by-dir ()
+  (with-current-buffer (current-buffer)
+    (let ((dir (expand-file-name default-directory)))
+      (cond ((member (buffer-name) '("*Completions*"
+                                     "*scratch*"
+                                     "*Messages*"
+                                     "*Ediff Registry*"))
+             (list "#misc"))
+            ((string-match-p "/.emacs.d/" dir) (list ".emacs.d"))
+            (t (list dir))))))
+
+(setq tabbar-buffer-groups-function 'tabbar-group-buffers-by-dir)
+
+(setq frame-title-format '("%f"))
+
