@@ -131,3 +131,12 @@
 
 (setq frame-title-format '("%f"))
 
+(eval-after-load 'slime-repl-mode
+  '(progn (define-key slime-repl-mode-map (kbd "<C-return>") nil)))
+
+
+;;processing
+(autoload 'processing-mode "processing-mode" "Processing mode" t)
+(add-to-list 'auto-mode-alist '("\\.pde$" . processing-mode))
+
+
