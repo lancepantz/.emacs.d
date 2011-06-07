@@ -54,7 +54,16 @@
 
 ;; correctly tab defprotocols, etc
 (custom-set-variables
- '(clojure-mode-use-backtracking-indent t))
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(clojure-mode-use-backtracking-indent t)
+ '(safe-local-variable-values (quote ((clojure-defun-indents quote (at-revision)) (ruby-compilation-executable . "ruby") (ruby-compilation-executable . "ruby1.8") (ruby-compilation-executable . "ruby1.9") (ruby-compilation-executable . "rbx") (ruby-compilation-executable . "jruby"))))
+ '(show-paren-mode t)
+ '(tabbar-separator (quote (0)))
+ '(tabbar-use-images nil)
+ '(tool-bar-mode nil))
 
 ;; rainbow parentheses
 (require 'highlight-parentheses)
@@ -96,39 +105,6 @@
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;;tabbar settings
-(require 'tabbar)
-(set-face-attribute 'tabbar-default    nil :background wombat-gray-1 :font "Monaco")
-(set-face-attribute 'tabbar-unselected nil :foreground wombat-bg :box nil)
-(set-face-attribute 'tabbar-selected   nil :background wombat-bg :foreground wombat-gray-1 :box nil)
-(set-face-attribute 'tabbar-highlight  nil :underline t)
-
-(custom-set-variables '(tabbar-separator  '(0)))
-(custom-set-variables '(tabbar-use-images nil))
-
-(tabbar-mode 1)
-(global-set-key [C-right] 'tabbar-forward-tab)
-(global-set-key [C-left] 'tabbar-backward-tab)
-(global-set-key [C-up] 'tabbar-forward-group)
-(global-set-key [C-down] 'tabbar-backward-group)
-
-(defadvice tabbar-buffer-tab-label (after tabbar-tab-label activate)
-  (setq ad-return-value
-        (concat " " (concat (replace-regexp-in-string "<[[:digit:]]+>" "" ad-return-value) " "))))
-
-(defun tabbar-group-buffers-by-dir ()
-  (with-current-buffer (current-buffer)
-    (let ((dir (expand-file-name default-directory)))
-      (cond ((member (buffer-name) '("*Completions*"
-                                     "*scratch*"
-                                     "*Messages*"
-                                     "*Ediff Registry*"))
-             (list "#misc"))
-            ((string-match-p "/.emacs.d/" dir) (list ".emacs.d"))
-            (t (list dir))))))
-
-(setq tabbar-buffer-groups-function 'tabbar-group-buffers-by-dir)
-
 (setq frame-title-format '("%f"))
 
 (eval-after-load 'slime-repl-mode
@@ -140,3 +116,9 @@
 (add-to-list 'auto-mode-alist '("\\.pde$" . processing-mode))
 
 
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
