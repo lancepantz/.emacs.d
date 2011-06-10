@@ -1,3 +1,9 @@
+;; fancy file opening
+(ido-mode 1)
+
+;; turn off scrollbars
+(scroll-bar-mode 0)
+
 ;; turn off emacs startup message
 (setq inhibit-startup-message t)
 ;; do not wrap lines
@@ -32,9 +38,8 @@
 
 ;; load slime
 (eval-after-load "slime"
-  '(progn (slime-setup '(slime-repl))))
-(eval-after-load "slime"
-  '(setq slime-protocol-version 'ignore))
+  '(progn (slime-setup '(slime-repl))
+          '(setq slime-protocol-version 'ignore)))
 
 (require 'slime)
 (require 'slime-repl)
@@ -46,11 +51,16 @@
 
 ;; load paredit
 (require 'paredit)
-(add-hook 'clojure-mode-hook          (lambda () (paredit-mode +1)))
-(add-hook 'emacs-lisp-mode-hook       (lambda () (paredit-mode +1)))
-(add-hook 'lisp-mode-hook             (lambda () (paredit-mode +1)))
-(add-hook 'scheme-mode-hook           (lambda () (paredit-mode +1)))
-(add-hook 'lisp-interaction-mode-hook (lambda () (paredit-mode -1)))
+(dolist (mode '(clojure emacs-lisp lisp scheme lisp-interaction))
+  (add-hook (first (read-from-string (concat (symbol-name mode) "-mode-hook")))
+            (lambda ()
+            (paredit-mode 1)
+            (local-set-key (kbd "<M-left>") 'paredit-convolute-sexp)
+;;            (auto-complete-mode 1)
+)))
+
+(global-set-key (kbd "M-7")           'paredit-convolute-sexp)
+
 
 ;; correctly tab defprotocols, etc
 (custom-set-variables
@@ -61,8 +71,6 @@
  '(clojure-mode-use-backtracking-indent t)
  '(safe-local-variable-values (quote ((clojure-defun-indents quote (at-revision)) (ruby-compilation-executable . "ruby") (ruby-compilation-executable . "ruby1.8") (ruby-compilation-executable . "ruby1.9") (ruby-compilation-executable . "rbx") (ruby-compilation-executable . "jruby"))))
  '(show-paren-mode t)
- '(tabbar-separator (quote (0)))
- '(tabbar-use-images nil)
  '(tool-bar-mode nil))
 
 ;; rainbow parentheses
@@ -103,22 +111,27 @@
 (global-set-key (kbd "C-.")        'kmacro-end-or-call-macro)
 (global-set-key (kbd "<C-return>") 'apply-macro-to-region-lines)
 
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-hook 'before-save-hook 'whitespace-cleanup)
 
 (setq frame-title-format '("%f"))
 
 (eval-after-load 'slime-repl-mode
   '(progn (define-key slime-repl-mode-map (kbd "<C-return>") nil)))
 
-
 ;;processing
 (autoload 'processing-mode "processing-mode" "Processing mode" t)
 (add-to-list 'auto-mode-alist '("\\.pde$" . processing-mode))
 
+(defun smart-line-beginning ()
+  "Move point to the beginning of text
+on the current line; if that is already
+the current position of point, then move
+it to the beginning of the line."
+  (interactive)
+  (let ((pt (point)))
+    (beginning-of-line-text)
+    (when (eq pt (point))
+      (beginning-of-line))))
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(global-set-key "\C-a" 'smart-line-beginning)
+
