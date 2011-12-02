@@ -1,3 +1,12 @@
+;;uniquify buffer names
+(require 'uniquify)
+(setq
+  uniquify-buffer-name-style 'post-forward
+  uniquify-separator ":")
+
+;; for ^u ^<space>
+(setq set-mark-command-repeat-pop t)
+
 ;; fancy file opening
 (ido-mode 1)
 
@@ -7,7 +16,7 @@
 ;; turn off emacs startup message
 (setq inhibit-startup-message t)
 ;; do not wrap lines
-(setq-default truncate-lines t)
+;; (setq-default truncate-lines t)
 
 ;; tab width as two, using spaces
 (setq default-tab-width 2)
@@ -63,22 +72,14 @@
 
 
 ;; correctly tab defprotocols, etc
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(clojure-mode-use-backtracking-indent t)
- '(safe-local-variable-values (quote ((clojure-defun-indents quote (at-revision)) (ruby-compilation-executable . "ruby") (ruby-compilation-executable . "ruby1.8") (ruby-compilation-executable . "ruby1.9") (ruby-compilation-executable . "rbx") (ruby-compilation-executable . "jruby"))))
- '(show-paren-mode t)
- '(tool-bar-mode nil))
+
 
 ;; rainbow parentheses
 (require 'highlight-parentheses)
 (add-hook 'clojure-mode-hook '(lambda () (highlight-parentheses-mode 1)))
 (setq hl-paren-colors
       '("orange1" "yellow1" "greenyellow" "green1"
-	"springgreen1" "cyan1" "slateblue1" "magenta1" "purple"))
+       "springgreen1" "cyan1" "slateblue1" "magenta1" "purple"))
 
 ;; magic, haven't broken this down yet
 (defmacro defclojureface (name color desc &optional others)
@@ -135,3 +136,59 @@ it to the beginning of the line."
 
 (global-set-key "\C-a" 'smart-line-beginning)
 
+;; auto-complete-mode
+(require 'auto-complete-config)
+(ac-config-default)
+
+;; slime auto complete
+(require 'ac-slime)
+(add-hook 'slime-mode-hook 'set-up-slime-ac)
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+;; fix indenting in repl
+(add-hook 'slime-repl-mode-hook
+          (lambda ()
+            (define-key slime-repl-mode-map (kbd "<C-return>") nil)
+            (setq lisp-indent-function 'clojure-indent-function)
+            (set-syntax-table clojure-mode-syntax-table)))
+
+;;use § as interpunct
+(global-set-key (kbd "§") (lambda ()
+                            (interactive)
+                            (insert "·")))
+;;other bindings
+(defmacro bind-character (key char)
+  `(global-set-key (kbd ,key) (lambda ()
+                                (interactive)
+                                (insert ,char))))
+(bind-character "s-s" "·")
+(bind-character "s-x" "λ")
+(bind-character "s-z" "Φ")
+
+;;load erc znc
+(require 'znc)
+
+;;load gist.el
+(require 'gist)
+
+(autoload 'markdown-mode "markdown-mode"
+  "Major mode for editing Markdown files" t)
+(setq auto-mode-alist
+      (cons '("\\.md" . markdown-mode) auto-mode-alist))
+
+
+;; word count
+(defun word-count (start end)
+  "Print number of words in the region."
+  (interactive "r")
+  (save-excursion
+    (save-restriction
+      (narrow-to-region start end)
+      (goto-char (point-min))
+      (count-matches "\\sw+"))))

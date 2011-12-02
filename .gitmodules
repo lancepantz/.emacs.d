@@ -1,9 +1,12 @@
 [submodule "clojure-mode"]
-	path = clojure-mode
-	url = http://github.com/technomancy/clojure-mode.git
+  path = clojure-mode
+  url = http://github.com/technomancy/clojure-mode.git
 [submodule "slime"]
-	path = slime
-	url = http://github.com/nablaone/slime.git
-[submodule "auto-complete"]
-	path = auto-complete
-	url = ./auto-complete/
+  path = slime
+  url = http://github.com/nablaone/slime.git
+[submodule "ac-slime"]
+  path = ac-slime
+  url = ./ac-slime/
+[submodule "gist"]
+  path = gist
+  url = https://github.com/defunkt/gist.el.git
