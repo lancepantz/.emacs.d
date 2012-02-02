@@ -7,3 +7,9 @@
 [submodule "gist"]
   path = gist
   url = https://github.com/defunkt/gist.el.git
+[submodule "ac-slime"]
+  path = ac-slime
+  url = https://github.com/purcell/ac-slime.git
+[submodule "auto-complete"]
+  path = auto-complete
+  url = https://github.com/m2ym/auto-complete.git
