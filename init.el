@@ -192,3 +192,9 @@ it to the beginning of the line."
       (narrow-to-region start end)
       (goto-char (point-min))
       (count-matches "\\sw+"))))
+
+
+(autoload 'inf-ruby "inf-ruby" "Run an inferior Ruby process" t)
+(autoload 'inf-ruby-keys "inf-ruby" "" t)
+(eval-after-load 'ruby-mode
+  '(add-hook 'ruby-mode-hook 'inf-ruby-keys))
