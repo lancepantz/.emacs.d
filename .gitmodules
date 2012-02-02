@@ -4,9 +4,6 @@
 [submodule "slime"]
   path = slime
   url = http://github.com/nablaone/slime.git
-[submodule "ac-slime"]
-  path = ac-slime
-  url = ./ac-slime/
 [submodule "gist"]
   path = gist
   url = https://github.com/defunkt/gist.el.git
