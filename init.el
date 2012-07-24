@@ -200,3 +200,6 @@ it to the beginning of the line."
   '(add-hook 'ruby-mode-hook 'inf-ruby-keys))
 
 (setq js-indent-level 2)
+
+(setq font-lock-verbose nil)
+(setq slime-net-coding-system 'utf-8-unix)
